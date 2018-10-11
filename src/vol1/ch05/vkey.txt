@@ -1,0 +1,154 @@
+　　　　　　　　　　　日本語１０９キーボードでの キーコード一覧表
+
+キーコードは、
+
+
+● 一般キー［ 文字コード keyChar が定義されているもの］
+
+-------------------------------------------------------------
+  数字キー　　　　　　　  VK_1, VK_2, VK_3, VK_4, VK_5 
+                          VK_6, VK_7, VK_8, VK_9, VK_0
+
+　英字キー                VK_A, VK_B, VK_C, VK_D, VK_E
+                          VK_F, VK_G, VK_H, VK_I, VK_J
+                          VK_K, VK_L, VK_M, VK_N, VK_O
+                          VK_P, VK_Q, VK_R, VK_S, VK_T
+                          VK_U, VK_V, VK_W, VK_X, VK_y, VK_Z
+
+  マイナス(-)             VK_MINUS
+  キャレット(^)           VK_CIRCUMFLEX
+  円サイン(\)             VK_BACK_SLASH
+
+  アットマーク(@)         VK_AT
+  開き括弧([)             VK_OPEN_BRACKET
+
+  セミコロン(;)           VK_SEMICOLON
+  コロン(:)               VK_COLON
+  閉じ括弧(])             VK_CLOSE_BRACKET
+
+  コンマ(,)               VK_COMMA
+  ピリオド(.)             VK_PERIOD
+  スラッシュ(/)           VK_SLASH
+
+　テンキースラッシュ(/) 　VK_DIVIDE
+　テンキー・スタリスク(*) VK_MULTIPLY
+  テンキー・マイナス　　　VK_SUBTRACT
+　テンキープラス(+)       VK_ADD
+
+  テンキー数字　　　　　　VK_NUMPAD0, VK_NUMPAD1
+                          VK_NAMPAD2, VK_NUMPAD3
+                          VK_NUMPAD4, VK_NUMPAD5
+                          VK_NUMPAD6, VK_NUMPAD7
+                          VK_NUMPAD8, VK_NUMPAD9
+
+  テンキー小数点(.)       VK_DECIMAL
+-------------------------------------------------------------
+
+
+以下のキーは 可視ではないが、文字コードが定義されている。
+-------------------------------------------------------------
+  タブ(Tab)               VK_TAB
+  エンター(Enter)         VK_ENTER
+  エスケープ(Esc)キー　   VK_ESCAPE
+　スペース　　　　　　　  VK_SPACE
+  バックスペース(BS)      VK_BACK_SPACE
+-------------------------------------------------------------
+
+● 特殊キー［ 文字コード keyChar が 0 であるもの］
+
+-------------------------------------------------------------
+
+  ファンクションキー　    VK_F1, VK_F2, VK_F3, VK_F4
+                          VK_F5, VK_F6, VK_F7, VK_F8
+　　　　　　　　　　　　　VK_F9, VK_F10, VK_F11, VK_F12
+
+  英数　　　　　　　　　  VK_ALPHANUMERIC
+　無変換　　　　　　　　  VK_NONCONVERT
+　変換　　　　　　　　　  VK_CONVERT
+　ひらがな　　　　　　　  VK_HIRAGANA
+
+　インサート(Insert)      VK_INSERT
+  ホーム(Home)            VK_HOME
+  ページアップ(PageUp)    VK_PAGE_UP
+  デリート(Delete)        VK_DELETE
+  エンド(End)             VK_END
+  ページダウン(PageDown)  VK_PAGE_DOWN
+
+  Print Screen            VK_PRINTSCREEN
+  Scroll Lock             VK_VK_SCROLL_LOCK 
+  Pause                   VK_PAUSE
+
+  カーソル移動 上 　      VK_UP
+  カーソル移動 左         VK_LEFT
+  カーソル移動 下         VK_DOWN
+  カーソル移動 右         VK_RIGHT
+
+　Num Lock                VK_NUM_LOCK
+--------------------------------------------------------
+
+モディファイヤー
+--------------------------------------------------------
+　シフト(Shift)           VK_SHIFT
+  コントロール(Ctrl)      VK_CONTROL
+  オルト(Alt)             VK_ALT
+--------------------------------------------------------
+
+
+トグルで（押すたびに）キーコードが変わるもの
+--------------------------------------------------------
+全角  半角                VK_FULL_WIDTH   VK_HALF_WIDTH
+--------------------------------------------------------
+
+
+● モディファイヤーキーと併用の時に、キーコードが変わるもの
+
+　ほとんど全てのキーでは、モディファイヤーと併用されても、キーコードは変わらない。
+（ファンクションキーやカーソル移動キー以外の）通常の文字キーでは、モディファイヤーと併用の場合には、keyChar は変わる。しかし少数ながら、モディファイヤーと併用でキーコード事態が変わってしまうキーも存在している。
+
+Shift キーが押されている場合に、キーコードが変わるもの
+--------------------------------------------------------
+Shift + 英数              VK_CAPS_LOCK
+
+Shift + ひらがな          VK_KATAKANA
+--------------------------------------------------------
+
+Ctrl キーが押されている場合に、キーコードが変わるもの
+--------------------------------------------------------
+Ctrl + Pause              VK_CANCEL
+--------------------------------------------------------
+
+Alt キーが押されている場合に、キーコードが変わるもの
+--------------------------------------------------------
+Alt + ひらがな            VK_ROMAN_CHARACTERS
+
+Alt + 全角                VK_INPUT_METHOD_ON_OFF
+--------------------------------------------------------
+
+
+● テンキー
+
+NumLock がオン状態の時には、
+テンキーの数字キーは、左上から順に、
+=========================================
+    VK_NUMPAD7, VK_NUMPAD8, VK_NUMPAD9
+    VK_NUMPAD4, VK_NUMPAD5, VK_NUMPAD6
+    VK_NUMPAD1, VK_NUMPAD2, VK_NUMPAD3
+    VK\NUMPAD0, VK_DECIMAL
+=========================================
+となる。
+
+NumLock がオフ状態の時には、
+テンキーの数字キーは、左上から順に、
+=========================================
+    VK_HOME,    VK_UP       VK_PAGE_UP
+    VK_LEFT,    VK_CLEAR    VK_RIGHT
+    VK_END,     VK_DOWN,    VK_PAGE_DOWN
+    VK_INSERT,  VK_DELETE
+=========================================
+となる。
+
+
+● 非サポートキー
+
+Windows キーを押すと、　keyCode は 0 。
+
