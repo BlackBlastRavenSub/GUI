@@ -39,7 +39,6 @@ public class DialogTest03C extends JFrame {
                 JOptionPane.showMessageDialog(pane, "Javaは苦手です", "Java Answer",
                         JOptionPane.WARNING_MESSAGE);
             }
-
         }
     }
 }
