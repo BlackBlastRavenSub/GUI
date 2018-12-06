@@ -6,7 +6,7 @@ import javax.swing.text.*;
 public class JTextFieldTest5 extends JFrame {
 
   public static void main( String[] args ){
-    JFrame w = new JTextFieldTest5( "JTextFieldTest5" );
+    JFrame w = new JTextFieldTest5( "JTextFieldTest6" );
     w.setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE );
     w.setSize( 200, 150 );
     w.setVisible( true );
