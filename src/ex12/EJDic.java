@@ -51,6 +51,10 @@ public class EJDic {
         map.remove(eng);
     }
 
+    public void replace(String eng, String jap) {
+        map.replace(eng,jap);
+    }
+
     public void showWords() {
         for (Map.Entry<String, String> entry : map.entrySet()) {
             System.out.println(entry.getKey() + "," + entry.getValue());

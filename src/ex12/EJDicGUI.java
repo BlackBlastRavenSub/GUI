@@ -4,6 +4,8 @@ import java.awt.*;
 import javax.swing.*;
 import javax.swing.event.*;
 import javax.swing.border.*;
+import javax.swing.text.Element;
+import javax.swing.text.rtf.RTFEditorKit;
 import java.awt.event.*;
 
 public class EJDicGUI extends JFrame {
@@ -12,6 +14,8 @@ public class EJDicGUI extends JFrame {
     JButton addButton, removeButton, updateButton;
     JPanel pane;
     EJDic dictionary;
+    RTFEditorKit rtfEditor;
+
 
     public static void main(String[] args) {
         JFrame w = new EJDicGUI("EJDicGUI");
@@ -24,6 +28,7 @@ public class EJDicGUI extends JFrame {
         super(title);
         dictionary = new EJDic();
         pane = (JPanel) getContentPane();
+        rtfEditor = new RTFEditorKit();
 
         JMenuBar menuBar = new JMenuBar();
         setJMenuBar(menuBar);
@@ -78,7 +83,15 @@ public class EJDicGUI extends JFrame {
         }
 
         public void actionPerformed(ActionEvent e) {
-
+            JFileChooser jFileChooser = new JFileChooser();
+            int error = jFileChooser.showOpenDialog(EJDicGUI.this);
+            //エラー発生
+            if (error != JFileChooser.APPROVE_OPTION) {
+                return;
+            }
+            EJDicGUI.this.dictionary.open(jFileChooser.getSelectedFile().getAbsolutePath());
+            EJDicGUI.this.list.setListData(dictionary.keySet().toArray());
+            System.out.println(jFileChooser.getSelectedFile().getName());
         }
     }
 
@@ -89,7 +102,15 @@ public class EJDicGUI extends JFrame {
         }
 
         public void actionPerformed(ActionEvent e) {
-
+            JFileChooser jFileChooser = new JFileChooser();
+            int error = jFileChooser.showSaveDialog(EJDicGUI.this);
+            //エラー発生
+            if (error != JFileChooser.APPROVE_OPTION) {
+                return;
+            }
+            EJDicGUI.this.dictionary.save(jFileChooser.getSelectedFile().getAbsolutePath());
+            EJDicGUI.this.list.setListData(dictionary.keySet().toArray());
+            System.out.println(jFileChooser.getSelectedFile().getName());
         }
     }
 
@@ -100,7 +121,14 @@ public class EJDicGUI extends JFrame {
         }
 
         public void actionPerformed(ActionEvent e) {
-
+            int dirlog = JOptionPane.showConfirmDialog(null, "シャットダウンしますか?", "終了しますか?", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+            switch (dirlog) {
+                case JOptionPane.YES_OPTION:
+                    System.exit(0);
+                    break;
+                case JOptionPane.NO_OPTION:
+                    break;
+            }
         }
     }
 
@@ -111,7 +139,20 @@ public class EJDicGUI extends JFrame {
         }
 
         public void actionPerformed(ActionEvent e) {
-
+            String english = EJDicGUI.this.english.getText();
+            String japanese = EJDicGUI.this.japanese.getText();
+            //両方のフィールド内の値を削除する
+            EJDicGUI.this.english.setText("");
+            EJDicGUI.this.japanese.setText("");
+            //どちらかのフィールドに値が入っていない
+            if (english.equals("") || japanese.equals("")) {
+                System.out.println("両方のフィールドに値を入力してください");
+                return;
+            }
+            //英語と日本語のペアをhashMapに保存する
+            EJDicGUI.this.dictionary.put(english, japanese);
+            //listにデータをセットして表示
+            EJDicGUI.this.list.setListData(dictionary.keySet().toArray());
         }
     }
 
@@ -122,7 +163,17 @@ public class EJDicGUI extends JFrame {
         }
 
         public void actionPerformed(ActionEvent e) {
-
+            String english = EJDicGUI.this.english.getText();
+            String japanese = EJDicGUI.this.japanese.getText();
+            //両方のフィールド内の値を削除する
+            EJDicGUI.this.english.setText("");
+            EJDicGUI.this.japanese.setText("");
+            //どちらかのフィールドに値が入っていない、あるいは英語に対応したキーが無い
+            if (english.equals("") || japanese.equals("") || EJDicGUI.this.dictionary.get(english) == null) {
+                System.out.println("エラー発生");
+                return;
+            }
+            EJDicGUI.this.dictionary.replace(english, japanese);
         }
     }
 
@@ -133,7 +184,21 @@ public class EJDicGUI extends JFrame {
         }
 
         public void actionPerformed(ActionEvent e) {
-
+            String chooseEnglish = list.getSelectedValue().toString();
+            if (chooseEnglish == null) {
+                System.out.println("項目を選択してください");
+                return;
+            }
+            int checkDirlog = JOptionPane.showConfirmDialog(null, "削除しますか?", "本当に良いですか?", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+            switch (checkDirlog) {
+                case JOptionPane.YES_OPTION:
+                    dictionary.remove(chooseEnglish);
+                    EJDicGUI.this.list.setListData(dictionary.keySet().toArray(new String[0]));
+                    System.out.println("削除!");
+                    break;
+                case JOptionPane.NO_OPTION:
+                    break;
+            }
         }
     }
 

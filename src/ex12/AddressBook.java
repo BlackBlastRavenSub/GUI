@@ -97,6 +97,17 @@ public class AddressBook {
         return nameList;
     }
 
+    public String[] getNameArray() {
+        String string[];
+        string = new String[book.size()];
+        int i = 0;
+        for (Address input : book) {
+            string[i] = input.getName();// input.getName().toString();
+            i++;
+        }
+        return string;
+    }
+
     public static void main(String[] args) {
         AddressBook book = new AddressBook();
         book.open("address.txt");

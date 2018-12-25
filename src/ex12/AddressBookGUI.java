@@ -84,9 +84,18 @@ public class AddressBookGUI extends JFrame {
         }
 
         public void actionPerformed(ActionEvent e) {
-
+            JFileChooser jFileChooser = new JFileChooser();
+            int error = jFileChooser.showOpenDialog(AddressBookGUI.this);
+            //エラー発生
+            if (error != JFileChooser.APPROVE_OPTION) {
+                return;
+            }
+            AddressBookGUI.this.book.open(jFileChooser.getSelectedFile().getAbsolutePath());
+            AddressBookGUI.this.list.setListData(AddressBookGUI.this.book.getNames().toArray());
+            System.out.println(jFileChooser.getSelectedFile().getName());
         }
     }
+
 
     class SaveAction extends AbstractAction {
         SaveAction() {
@@ -95,7 +104,15 @@ public class AddressBookGUI extends JFrame {
         }
 
         public void actionPerformed(ActionEvent e) {
-
+            JFileChooser jFileChooser = new JFileChooser();
+            int error = jFileChooser.showSaveDialog(AddressBookGUI.this);
+            //エラー発生
+            if (error != JFileChooser.APPROVE_OPTION) {
+                return;
+            }
+            AddressBookGUI.this.book.save(jFileChooser.getSelectedFile().getAbsolutePath());
+            AddressBookGUI.this.list.setListData(book.getNames().toArray());
+            System.out.println(jFileChooser.getSelectedFile().getName());
         }
     }
 
@@ -117,7 +134,24 @@ public class AddressBookGUI extends JFrame {
         }
 
         public void actionPerformed(ActionEvent e) {
-
+            String name = AddressBookGUI.this.nameField.getText();
+            String address = AddressBookGUI.this.addressField.getText();
+            String tel = AddressBookGUI.this.telField.getText();
+            String email = AddressBookGUI.this.emailField.getText();
+            //フィールドのリセット
+            AddressBookGUI.this.nameField.setText("");
+            AddressBookGUI.this.addressField.setText("");
+            AddressBookGUI.this.telField.setText("");
+            AddressBookGUI.this.emailField.setText("");
+            //いずれかのフィールドに値が入っていない
+            if (name.isEmpty() || address.isEmpty() || tel.isEmpty() || email.isEmpty()) {
+                System.out.println("フィールドに値が入っていない");
+                return;
+            }
+            //アドレスブックの追加
+            AddressBookGUI.this.book.add(new Address(name, address, tel, email));
+            //画面更新
+            AddressBookGUI.this.list.setListData(AddressBookGUI.this.book.getNameArray());
         }
     }
 
