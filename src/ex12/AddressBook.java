@@ -62,6 +62,12 @@ public class AddressBook {
         return null;
     }
 
+    public Optional<Address> nameToAddress(String name) {
+        Optional<Address> find = this.book.stream()
+                .filter(s -> s.getName().equals(name)).findFirst();
+        return find;
+    }
+
     public Address findAddress(String add) {
         for (Address address : book) {
             if (add.equals(address.getAddress())) {

@@ -5,11 +5,12 @@ import javax.swing.*;
 import javax.swing.event.*;
 import javax.swing.border.*;
 import java.awt.event.*;
+import java.util.Optional;
 
 public class AddressBookGUI extends JFrame {
     JTextField nameField, addressField, telField, emailField;
     DefaultListModel model;
-    JList list;
+    JList<String> list;
     JButton addButton, removeButton, updateButton;
     JPanel pane;
     AddressBook book;
@@ -73,7 +74,11 @@ public class AddressBookGUI extends JFrame {
 
     class NameSelect implements ListSelectionListener {
         public void valueChanged(ListSelectionEvent e) {
-
+            Optional<Address> selectedAddress = AddressBookGUI.this.book.nameToAddress(AddressBookGUI.this.list.getSelectedValue());
+            nameField.setText(selectedAddress.get().getName());
+            addressField.setText(selectedAddress.get().getAddress());
+            telField.setText(selectedAddress.get().getTel());
+            emailField.setText(selectedAddress.get().getEmail());
         }
     }
 
@@ -91,8 +96,11 @@ public class AddressBookGUI extends JFrame {
                 return;
             }
             AddressBookGUI.this.book.open(jFileChooser.getSelectedFile().getAbsolutePath());
-            AddressBookGUI.this.list.setListData(AddressBookGUI.this.book.getNames().toArray());
+            //AddressBookGUI.this.list.setListData(AddressBookGUI.this.book.getNames().toArray());
+            //AddressBookGUI.this.list.setListData((String[]) AddressBookGUI.this.book.getNames().toArray());
             System.out.println(jFileChooser.getSelectedFile().getName());
+            //画面更新
+            AddressBookGUI.this.list.setListData(AddressBookGUI.this.book.getNameArray());
         }
     }
 
@@ -111,7 +119,8 @@ public class AddressBookGUI extends JFrame {
                 return;
             }
             AddressBookGUI.this.book.save(jFileChooser.getSelectedFile().getAbsolutePath());
-            AddressBookGUI.this.list.setListData(book.getNames().toArray());
+            //AddressBookGUI.this.list.setListData(book.getNames().toArray());
+            AddressBookGUI.this.list.setListData((String[]) book.getNames().toArray());
             System.out.println(jFileChooser.getSelectedFile().getName());
         }
     }
@@ -123,7 +132,14 @@ public class AddressBookGUI extends JFrame {
         }
 
         public void actionPerformed(ActionEvent e) {
-
+            int dirlog = JOptionPane.showConfirmDialog(null, "シャットダウンしますか?", "終了しますか?", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+            switch (dirlog) {
+                case JOptionPane.YES_OPTION:
+                    System.exit(0);
+                    break;
+                case JOptionPane.NO_OPTION:
+                    break;
+            }
         }
     }
 
@@ -162,7 +178,40 @@ public class AddressBookGUI extends JFrame {
         }
 
         public void actionPerformed(ActionEvent e) {
-
+            /*
+            String english = EJDicGUI.this.english.getText();
+            String japanese = EJDicGUI.this.japanese.getText();
+            //両方のフィールド内の値を削除する
+            EJDicGUI.this.english.setText("");
+            EJDicGUI.this.japanese.setText("");
+            //どちらかのフィールドに値が入っていない、あるいは英語に対応したキーが無い
+            if (english.equals("") || japanese.equals("") || EJDicGUI.this.dictionary.get(english) == null) {
+                System.out.println("エラー発生");
+                return;
+            }
+            EJDicGUI.this.dictionary.replace(english, japanese);
+             */
+            String name = AddressBookGUI.this.nameField.getText();
+            String address = AddressBookGUI.this.addressField.getText();
+            String tel = AddressBookGUI.this.telField.getText();
+            String email = AddressBookGUI.this.emailField.getText();
+            //全部のフィールド内の値を削除する
+            AddressBookGUI.this.nameField.setText("");
+            AddressBookGUI.this.addressField.setText("");
+            AddressBookGUI.this.telField.setText("");
+            AddressBookGUI.this.emailField.setText("");
+            //いずれかのフィールドに値が入っていない、あるいは名前に対応したキーが無い
+            if (name.equals("") | address.equals("") | tel.equals("") | email.equals("") | AddressBookGUI.this.book.findName(name) == null) {
+                System.out.println("エラー発生");
+                return;
+            }
+            //まず古いデータを削除する
+            System.out.println("更新");
+            AddressBookGUI.this.book.remove(book.findName(name));
+            //アドレスブックの追加・・・追加で良いのか?でもHashMapではなくArrayListだからreplaceは使えない
+            AddressBookGUI.this.book.add(new Address(name, address, tel, email));
+            //画面更新
+            AddressBookGUI.this.list.setListData(AddressBookGUI.this.book.getNameArray());
         }
     }
 
@@ -173,7 +222,26 @@ public class AddressBookGUI extends JFrame {
         }
 
         public void actionPerformed(ActionEvent e) {
-
+            String name = list.getSelectedValue().toString();
+            if (name == null) {
+                System.out.println("項目を選択してください");
+                return;
+            }
+            int checkDirlog = JOptionPane.showConfirmDialog(null, "削除しますか?", "本当に良いですか?", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+            switch (checkDirlog) {
+                case JOptionPane.YES_OPTION:
+                    AddressBookGUI.this.book.remove(book.findName(AddressBookGUI.this.nameField.getText()));
+                    AddressBookGUI.this.list.setListData(AddressBookGUI.this.book.getNameArray());
+                    System.out.println("削除!");
+                    //全部のフィールド内の値を削除する
+                    AddressBookGUI.this.nameField.setText("");
+                    AddressBookGUI.this.addressField.setText("");
+                    AddressBookGUI.this.telField.setText("");
+                    AddressBookGUI.this.emailField.setText("");
+                    break;
+                case JOptionPane.NO_OPTION:
+                    break;
+            }
         }
     }
 }
