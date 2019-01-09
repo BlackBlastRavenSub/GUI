@@ -8,26 +8,26 @@ import javax.swing.event.*;
 import javax.swing.border.*;
 import java.awt.event.*;
 import java.util.Optional;
+import java.util.Random;
 
 public class Monty_Hall extends JFrame {
     int flag;
+    int highScore = 0;
 
     public static void main(String args[]) {
+        int highScore = 0;
 
         Monty_Hall Vision = new Monty_Hall();
         Vision.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         Vision.setSize(700, 900);
         Vision.setVisible(true);
+        //System.out.println("ようこそ!現在のハイスコアは" + highScore + "だ!");
 
         //システム部分
         Monty_Hall monty_hall = new Monty_Hall();
         Game game = new Game();
-        for(;;){
-            if(monty_hall.flag==1){
-                System.out.println("移れ");
-            }
-        }
-
+        game.Input(55);
+        game.Input(88);
     }
 
 
@@ -50,14 +50,28 @@ public class Monty_Hall extends JFrame {
 
     static class Game {
         int correct;
-        int select;
+        int select = 0;
         int dummy;
         int stage = 0;//現在の段階
 
-        void Input() {
+        void random() {
+            Random random = new Random();
+            correct = random.nextInt(99) + 1;
+            do {
+                dummy = random.nextInt(99) + 1;
+            } while (correct != dummy);
+        }
+
+        void showHighScore() {
+
+        }
+
+        void Input(int num) {
+            select = num;
             switch (stage) {
                 case 0:
                     //最初のドア指定
+                    random();
                     FirstChoice();
                     break;
                 case 1:
@@ -68,10 +82,22 @@ public class Monty_Hall extends JFrame {
         }
 
         void FirstChoice() {
-
+            System.out.println("あなたが選んだドアは" + select + "だ");
+            if (select != correct) {
+                System.out.println("そして正解のドアは" + select + "か" + correct + "だ");
+            } else {
+                System.out.println("そして正解のドアは" + select + "か" + dummy + "だ");
+            }
+            stage = 1;
         }
 
         void FinalChoice() {
+            System.out.println("あなたが選んだドアは" + select + "だ");
+            if (select != correct) {
+                System.out.println("残念・・・正解のドアは" + correct + "だった・・・");
+            } else {
+                System.out.println("正解!" + select + "のドアが当たりだ!");
+            }
         }
     }
 
