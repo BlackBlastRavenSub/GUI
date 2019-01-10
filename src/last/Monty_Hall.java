@@ -13,9 +13,13 @@ import java.util.Random;
 public class Monty_Hall extends JFrame {
     int flag;
     int highScore = 0;
+    Game game = new Game();
+    JTextField textField = new JTextField(200);
+    JButton[][] jButtonList;
 
     public static void main(String args[]) {
         int highScore = 0;
+
 
         Monty_Hall Vision = new Monty_Hall();
         Vision.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -24,10 +28,9 @@ public class Monty_Hall extends JFrame {
         //System.out.println("ようこそ!現在のハイスコアは" + highScore + "だ!");
 
         //システム部分
-        Monty_Hall monty_hall = new Monty_Hall();
-        Game game = new Game();
-        game.Input(55);
-        game.Input(88);
+
+        // game.Input(55);
+        //game.Input(88);
     }
 
 
@@ -40,15 +43,24 @@ public class Monty_Hall extends JFrame {
         pane.add(buttonPane, BorderLayout.CENTER);
         buttonPane.setSize(700, 700);
 
-        JTextField textField = new JTextField(200);
         pane.add(textField, BorderLayout.SOUTH);
+        //textField.setFont(new Font("",Font.PLAIN,80));
+        textField.setBorder(new EmptyBorder(200, 10, 10, 10));
         textField.setEditable(false);
         textField.setBackground(Color.white);
         textField.setSize(700, 200);
         setVisible(true);
     }
 
-    static class Game {
+    String setTextField(String input) {
+        return getTextField() + input;
+    }
+
+    public JTextField getTextField() {
+        return textField;
+    }
+
+    class Game {
         int correct;
         int select = 0;
         int dummy;
@@ -66,6 +78,7 @@ public class Monty_Hall extends JFrame {
 
         }
 
+
         void Input(int num) {
             select = num;
             switch (stage) {
@@ -82,7 +95,7 @@ public class Monty_Hall extends JFrame {
         }
 
         void FirstChoice() {
-            System.out.println("あなたが選んだドアは" + select + "だ");
+            setTextField(getTextField()+"あなたが選んだドアは" + select + "だ");
             if (select != correct) {
                 System.out.println("そして正解のドアは" + select + "か" + correct + "だ");
             } else {
@@ -108,8 +121,9 @@ public class Monty_Hall extends JFrame {
 
         public void actionPerformed(ActionEvent e) {
             String num = (String) getValue(Action.NAME);
+            String number = num.substring(4);
             System.out.println(num);
-            flag = 1;
+            game.Input(Integer.parseInt(number));
         }
     }
 }
